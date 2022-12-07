@@ -8,7 +8,8 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/login', valid.validFields, userController.getByUsername);
+app.post('/login', valid.validFields, userController.login);
+app.post('/user', valid.validateNewUserFields, userController.createNewUser);
 
 // ...
 
