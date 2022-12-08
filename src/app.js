@@ -1,5 +1,6 @@
 const express = require('express');
 const userController = require('./controllers/user.controller');
+const categoriesController = require('./controllers/category.controller');
 const valid = require('./middlewares/userValidations');
 
 // ...
@@ -10,6 +11,7 @@ app.use(express.json());
 
 app.post('/login', valid.validFields, userController.login);
 app.post('/user', valid.validateNewUserFields, userController.createNewUser);
+app.post('/categories', categoriesController.addNewCategory);
 app.get('/user', userController.getAllUsers);
 app.get('/user/:id', userController.getUserById);
 

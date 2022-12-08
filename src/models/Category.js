@@ -9,8 +9,11 @@ const CategorySchema = (sequelize,DataTypes) => {
     name: {
       type:DataTypes.STRING,
       allowNull: false,
-    }
-  })
+    }},
+    {
+      timestamps: false,
+      tableName: "categories",
+    });
 
   return Category;
 }
