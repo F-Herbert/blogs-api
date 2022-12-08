@@ -18,7 +18,7 @@ const createNewUser = async ({ displayName, email, password, image }) => {
       password,
       image,
     });
-    const { password: _, ...userWithoutPassword } = newUser.dataValues;
+    const { password: _, ...userWithoutPassword } = newUser;
     const token = createToken(userWithoutPassword);
     return { status: 201, message: token };
   }
