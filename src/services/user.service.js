@@ -1,15 +1,11 @@
-const jwt = require('jsonwebtoken');
+const { createToken, verifyToken } = require('../auth/jwtFunctions');
 const { User } = require('../models');
-
- const secret = process.env.JWT_SECRET || 'YourSecretHere';
-
-const jwtConfig = { algorithm: 'HS256', expiresIn: '10d' };
 
 const login = async ({ email, password }) => {
     const validUser = await User.findOne({ where: { email, password } });
-    const token = jwt.sign({ data: validUser.dataValues }, secret, jwtConfig);
     if (validUser === null) return { status: 400, message: 'Invalid fields', err: true };
-    console.log(token);
+    const { password: _, ...validUserWithoutPassword } = validUser.dataValues;
+    const token = createToken(validUserWithoutPassword);
     return { status: 200, message: token, err: false };
 };
 
@@ -22,8 +18,8 @@ const createNewUser = async ({ displayName, email, password, image }) => {
       password,
       image,
     });
-    const token = jwt.sign({ data: newUser.dataValues }, secret, jwtConfig);
-   
+    const { password: _, ...userWithoutPassword } = newUser.dataValues;
+    const token = createToken(userWithoutPassword);
     return { status: 201, message: token };
   }
   if (validNewUser.dataValues.email === email) {
@@ -32,7 +28,22 @@ const createNewUser = async ({ displayName, email, password, image }) => {
   return null;
 };
 
+  const getAllUsers = async (authorization) => {
+    const allUser = await User.findAll();
+    const formatUsers = allUser.map(({ dataValues }) => {
+      const { password: _, ...userWithoutPassword } = dataValues;
+      return userWithoutPassword;
+    });
+
+    const { isError } = verifyToken(authorization);
+    if (!authorization) return { status: 401, error: 'Token not found' };
+    if (isError) return { status: 401, error: 'Expired or invalid token' };
+
+    return { status: 200, message: formatUsers };
+  };
+
 module.exports = {
   login,
   createNewUser,
+  getAllUsers,
 };

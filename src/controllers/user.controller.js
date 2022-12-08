@@ -11,17 +11,21 @@ const login = async (req, res) => {
 };
 
 const createNewUser = async (req, res) => {
-  // try {
     const userInfo = req.body;
     const { status, message, error } = await userService.createNewUser(userInfo);
     if (error === true) return res.status(status).json({ message });
     return res.status(status).json({ token: message });
-  // } catch (error) {
-  //   return res.status(400).json({ message: 'não consegui cadastrar' });
-  // }
+};
+
+const getAllUsers = async (req, res) => {
+  const { authorization } = req.headers;
+  const { status, message, error } = await userService.getAllUsers(authorization);
+  if (error) return res.status(status).json({ message: error });
+  return res.status(status).json(message);
 };
 
 module.exports = {
   login,
   createNewUser,
+  getAllUsers,
 };

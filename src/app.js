@@ -10,6 +10,9 @@ app.use(express.json());
 
 app.post('/login', valid.validFields, userController.login);
 app.post('/user', valid.validateNewUserFields, userController.createNewUser);
+app.get('/user', userController.getAllUsers);
+
+// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjcwNTA4OTQ0LCJleHAiOjE2NzEzNzI5NDR9.O69Se7soIjYK2htKBjQSukP-h4xTjKgcBPa-Xny4N4o"
 
 // ...
 
