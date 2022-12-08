@@ -42,8 +42,23 @@ const createNewUser = async ({ displayName, email, password, image }) => {
     return { status: 200, message: formatUsers };
   };
 
+  const getUserById = async (id, authorization) => {
+    const user = await User.findOne({ where: { id } });
+    if (user === null) return { status: 404, error: 'User does not exist' };
+
+    const { dataValues } = user;
+    const { password: _, ...userWithoutPassword } = dataValues;
+    const { isError } = verifyToken(authorization);
+
+    if (!authorization) return { status: 401, error: 'Token not found' };
+    if (isError) return { status: 401, error: 'Expired or invalid token' };
+
+    return { status: 200, message: userWithoutPassword };
+  };
+
 module.exports = {
   login,
   createNewUser,
   getAllUsers,
+  getUserById,
 };
