@@ -3,7 +3,7 @@ const { User } = require('../models');
 
 const login = async ({ email, password }) => {
     const validUser = await User.findOne({ where: { email, password } });
-    if (validUser === null) return { status: 400, message: 'Invalid fields', err: true };
+    if (validUser === null) return { status: 400, error: 'Invalid fields' };
     const { password: _, ...validUserWithoutPassword } = validUser.dataValues;
     const token = createToken(validUserWithoutPassword);
     return { status: 200, message: token, err: false };

@@ -3,7 +3,8 @@ const userService = require('../services/user.service');
 const login = async (req, res) => {
   try {
     const userInfo = req.body;
-    const { status, message } = await userService.login(userInfo);
+    const { status, error, message } = await userService.login(userInfo);
+    if (error) return res.status(status).json({ message: error });
     return res.status(status).json({ token: message });
   } catch (error) {
     return res.status(400).json({ message: 'Invalid fields' });
