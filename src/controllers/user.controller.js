@@ -18,17 +18,15 @@ const createNewUser = async (req, res) => {
     return res.status(status).json({ token: message });
 };
 
-const getAllUsers = async (req, res) => {
-  const { authorization } = req.headers;
-  const { status, message, error } = await userService.getAllUsers(authorization);
+const getAllUsers = async (_req, res) => {
+  const { status, message, error } = await userService.getAllUsers();
   if (error) return res.status(status).json({ message: error });
   return res.status(status).json(message);
 };
 
 const getUserById = async (req, res) => {
   const { id } = req.params;
-  const { authorization } = req.headers;
-  const { status, error, message } = await userService.getUserById(Number(id), authorization);
+  const { status, error, message } = await userService.getUserById(Number(id));
   if (error) return res.status(status).json({ message: error });
   return res.status(status).json(message);
 };

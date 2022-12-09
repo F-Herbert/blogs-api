@@ -1,4 +1,4 @@
-const { createToken, verifyToken } = require('../auth/jwtFunctions');
+const { createToken } = require('../auth/jwtFunctions');
 const { User } = require('../models');
 
 const login = async ({ email, password }) => {
@@ -28,30 +28,22 @@ const createNewUser = async ({ displayName, email, password, image }) => {
   return null;
 };
 
-  const getAllUsers = async (authorization) => {
+  const getAllUsers = async () => {
     const allUser = await User.findAll();
     const formatUsers = allUser.map(({ dataValues }) => {
       const { password: _, ...userWithoutPassword } = dataValues;
       return userWithoutPassword;
     });
 
-    const { isError } = verifyToken(authorization);
-    if (!authorization) return { status: 401, error: 'Token not found' };
-    if (isError) return { status: 401, error: 'Expired or invalid token' };
-
     return { status: 200, message: formatUsers };
   };
 
-  const getUserById = async (id, authorization) => {
+  const getUserById = async (id) => {
     const user = await User.findOne({ where: { id } });
     if (user === null) return { status: 404, error: 'User does not exist' };
 
     const { dataValues } = user;
     const { password: _, ...userWithoutPassword } = dataValues;
-    const { isError } = verifyToken(authorization);
-
-    if (!authorization) return { status: 401, error: 'Token not found' };
-    if (isError) return { status: 401, error: 'Expired or invalid token' };
 
     return { status: 200, message: userWithoutPassword };
   };

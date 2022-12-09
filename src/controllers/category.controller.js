@@ -4,9 +4,8 @@ const addNewCategory = async (req, res) => {
   try {
     const infoCategory = req.body;
 
-    const { authorization } = req.headers;
     const { status, message, error } = await categoriesService
-      .addNewCategory(infoCategory, authorization);
+      .addNewCategory(infoCategory);
 
     if (error) return res.status(status).json({ message: error });
     return res.status(status).json(message);
@@ -15,6 +14,12 @@ const addNewCategory = async (req, res) => {
   }
 };
 
+const getAllCategories = async (req, res) => {
+  const allCategories = await categoriesService.getAllCategories();
+  return res.status(200).json(allCategories);
+};
+
 module.exports = {
   addNewCategory,
+  getAllCategories,
 };
