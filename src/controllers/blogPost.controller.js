@@ -13,6 +13,16 @@ const blogPost = async (req, res) => {
   }
 };
 
+const getAllPost = async (req, res) => {
+  try {
+    const { status, message } = await blogPostService.getAllPost();
+    return res.status(status).json(message);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
 module.exports = {
   blogPost,
+  getAllPost,
 };
