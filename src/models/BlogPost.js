@@ -15,7 +15,9 @@ const BlogPostSchema = (sequelize,DataTypes) => {
   {
     tableName: 'blog_posts',
     underscored: true,
-    timestamps: false,
+    timestamps: true,
+    createdAt: 'published',
+    updatedAt: 'updated'
   });
 
 
@@ -24,6 +26,7 @@ const BlogPostSchema = (sequelize,DataTypes) => {
       foreignKey: 'userId', as: 'users'
     });
   }
+
   return BlogPost;
 }
 

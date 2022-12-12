@@ -1,8 +1,10 @@
 const express = require('express');
 const userController = require('./controllers/user.controller');
 const categoriesController = require('./controllers/category.controller');
+const blogPostController = require('./controllers/blogPost.controller');
 const valid = require('./middlewares/userValidations');
 const { tokenValidation } = require('./middlewares/tokenValidation');
+const { validationFields } = require('./middlewares/blogPostValidation');
 
 // ...
 
@@ -13,6 +15,8 @@ app.use(express.json());
 app.post('/login', valid.validFields, userController.login);
 app.post('/user', valid.validateNewUserFields, userController.createNewUser);
 app.post('/categories', tokenValidation, categoriesController.addNewCategory);
+app.post('/post', tokenValidation, validationFields, blogPostController.blogPost);
+
 app.get('/user', tokenValidation, userController.getAllUsers);
 app.get('/user/:id', tokenValidation, userController.getUserById);
 app.get('/categories', tokenValidation, categoriesController.getAllCategories);
